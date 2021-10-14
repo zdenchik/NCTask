@@ -32,25 +32,21 @@ public class Task {
         this.title = title;
     }
 
-    private void timeSet(int startTime, int endTime, int repeatInterval){
+   private void timeSet(int startTime, int endTime, int repeatInterval){
         this.startTime = startTime;
         this.endTime = endTime;
         this.repeatInterval = repeatInterval;
     }
 
-    /* Get`s title of current task*/
     public String getTitle() { return title;}
 
-    /* Set`s title of current task*/
     public void setTitle(String title){ this.title = title;}
 
-    /* Check if current task is active */
     public boolean isActive() { return isActive;}
 
     public void setActive(boolean active) { this.isActive = active;}
 
     public int getTime() { return startTime;}
-
 
     public void setTime(int time) {
         if (isRepeated) {
