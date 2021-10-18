@@ -1,8 +1,5 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
-import javax.smartcardio.TerminalFactory;
-import java.util.Arrays;
-
 /**
  * Class ArrayTaskList - main purpose is to store default or
  * a repeatable task`s
@@ -12,14 +9,11 @@ import java.util.Arrays;
  */
 public class ArrayTaskList {
 
-    private Task ArrayList[];
+    private Task[] ArrayList = new Task[0];
 
-    public ArrayTaskList(){
-        ArrayList = new Task[0];
-    }
-
+    /* Add`s @param task to temp array and then clones into main array*/
     public void add(Task task) {
-        Task TempArray[] = new Task[ArrayList.length + 1];
+        Task[] TempArray = new Task[ArrayList.length + 1];
         for (int i = 0; i < ArrayList.length; i++) {
 
             TempArray[i] = ArrayList[i];
@@ -29,6 +23,7 @@ public class ArrayTaskList {
         this.ArrayList = TempArray.clone();
     }
 
+    /* Remove`s @param task array and @return true if task existed or false if not*/
     public boolean remove(Task task){
 
         boolean Answer = false;
@@ -42,7 +37,7 @@ public class ArrayTaskList {
         }
 
         if(Answer){
-            Task TempArray[] = new Task[ArrayList.length-1];
+            Task[] TempArray = new Task[ArrayList.length-1];
             for(int i = 0, j = 0; i < ArrayList.length;i++){
                 if(i != k){
 
@@ -61,6 +56,10 @@ public class ArrayTaskList {
 
     public Task getTask(int index){ return this.ArrayList[index];}
 
+    /*
+     * Check when task`s from array will be repeated from @param current-to, or will it repeat at all
+     * @return "-1" if task won`t be repeated or "time" of a next task
+    */
     public ArrayTaskList incoming(int from, int to){
 
         ArrayTaskList TempArrayList = new ArrayTaskList();

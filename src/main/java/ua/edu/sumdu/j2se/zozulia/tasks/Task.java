@@ -73,7 +73,7 @@ public class Task {
     public boolean isRepeated() { return isRepeated;}
 
     /*
-     *Check when current task will be repeated from @param current, or will it repeat at all
+     * Check when current task will be repeated from @param current, or will it repeat at all
      * @return "-1" if task won`t be repeated or "time" of a next task
      */
     public int nextTimeAfter(int current) {
