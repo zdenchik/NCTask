@@ -14,10 +14,12 @@ public class ArrayTaskList {
 
     private Task ArrayList[];
 
+    /* Default constructor*/
     public ArrayTaskList(){
         ArrayList = new Task[0];
     }
 
+    /* Add`s @param task to temp array and then clones into main array*/
     public void add(Task task) {
         Task TempArray[] = new Task[ArrayList.length + 1];
         for (int i = 0; i < ArrayList.length; i++) {
@@ -29,6 +31,7 @@ public class ArrayTaskList {
         this.ArrayList = TempArray.clone();
     }
 
+    /* Remove`s @param task array and @return true if task existed or false if not*/
     public boolean remove(Task task){
 
         boolean Answer = false;
@@ -61,6 +64,10 @@ public class ArrayTaskList {
 
     public Task getTask(int index){ return this.ArrayList[index];}
 
+    /*
+     * Check when task`s from array will be repeated from @param current-to, or will it repeat at all
+     * @return "-1" if task won`t be repeated or "time" of a next task
+    */
     public ArrayTaskList incoming(int from, int to){
 
         ArrayTaskList TempArrayList = new ArrayTaskList();
