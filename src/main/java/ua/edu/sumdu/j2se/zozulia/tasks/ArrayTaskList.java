@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
+import java.util.Arrays;
+
 /**
  * Class ArrayTaskList - main purpose is to store default or
  * a repeatable task`s
@@ -9,18 +11,28 @@ package ua.edu.sumdu.j2se.zozulia.tasks;
  */
 public class ArrayTaskList {
 
-    private Task[] arrayList = new Task[0];
+    private Task[] arrayList = new Task[10];
+    private int lastElement = 0;
+    private double koef = 1.5;
+
+    public double getKoef() {
+        return koef;
+    }
+
+    public void setKoef(double koef) {
+        this.koef = koef;
+    }
 
     /* Add`s @param task to temp array and then clones into main array*/
     public void add(Task task) {
-        Task[] tempArray = new Task[arrayList.length + 1];
-        for (int i = 0; i < arrayList.length; i++) {
-
-            tempArray[i] = arrayList[i];
-
+        if (arrayList.length > lastElement){
+            arrayList[lastElement++] = task;
+            return;
         }
-        tempArray[tempArray.length - 1] = task;
-        this.arrayList = tempArray.clone();
+        Task[] tempArray = new Task[(int) (arrayList.length*koef)];
+        System.arraycopy(arrayList,0,tempArray,0,arrayList.length);
+        arrayList = tempArray.clone();
+        arrayList[lastElement++] = task;
     }
 
     /* Remove`s @param task array and @return true if task existed or false if not*/
@@ -37,22 +49,14 @@ public class ArrayTaskList {
         }
 
         if(answer){
-            Task[] tempArray = new Task[arrayList.length-1];
-            for(int i = 0, j = 0; i < arrayList.length; i++){
-                if(i != k){
-
-                    tempArray[j++] = arrayList[i];
-
-                }
-            }
-            
-            this.arrayList = tempArray.clone();
+            System.arraycopy(arrayList,k+1,arrayList,k,lastElement-k-1);
+           arrayList[--lastElement] = null;
         }
 
         return answer;
     }
 
-    public int size(){ return this.arrayList.length;}
+    public int size(){ return lastElement;}
 
     public Task getTask(int index){ return this.arrayList[index];}
 
@@ -63,10 +67,10 @@ public class ArrayTaskList {
     public ArrayTaskList incoming(int from, int to){
 
         ArrayTaskList tempArrayList = new ArrayTaskList();
-        for(Task element : arrayList){
-            int temp = element.nextTimeAfter(from);
+        for (int i = 0; i < lastElement; i++) {
+            int temp = arrayList[i].nextTimeAfter(from);
             if(temp != -1 && temp <= to){
-                tempArrayList.add(element);
+                tempArrayList.add(arrayList[i]);
             }
         }
         return tempArrayList;

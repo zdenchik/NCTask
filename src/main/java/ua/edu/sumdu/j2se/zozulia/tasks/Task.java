@@ -80,20 +80,20 @@ public class Task {
         if(!isActive){return -1;}
 
         if (!isRepeated) {
-            return (current >= this.startTime) ? -1 : this.startTime;
+            return (current >= startTime) ? -1 : startTime;
         }
 
-        if (current < this.startTime) {
-            return this.startTime;
+        if (current < startTime) {
+            return startTime;
         }
 
-        if (current >= this.endTime || (this.startTime + this.repeatInterval) >= this.endTime
-                || this.endTime <= (current + this.repeatInterval)) {
+        if (current >= endTime || (startTime + repeatInterval) >= endTime
+                || endTime <= (current + repeatInterval)) {
             return -1;
         } else {
-            int temp = this.startTime;
+            int temp = startTime;
             while(temp <= current){
-                temp = temp + this.repeatInterval;
+                temp = temp + repeatInterval;
             }
             return temp;
 
