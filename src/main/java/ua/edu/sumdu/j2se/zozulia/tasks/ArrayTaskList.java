@@ -1,7 +1,5 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
-import java.util.Arrays;
-
 /**
  * Class ArrayTaskList - main purpose is to store default or
  * a repeatable task`s
@@ -24,7 +22,9 @@ public class ArrayTaskList {
     }
 
     /* Add`s @param task to temp array and then clones into main array*/
-    public void add(Task task) {
+    public void add(Task task) throws Exception {
+        if(task == null){throw new Exception("Task can`t be null");}
+
         if (arrayList.length > lastElement){
             arrayList[lastElement++] = task;
             return;
@@ -58,13 +58,17 @@ public class ArrayTaskList {
 
     public int size(){ return lastElement;}
 
-    public Task getTask(int index){ return this.arrayList[index];}
+    public Task getTask(int index) throws IndexOutOfBoundsException{
+        if(index > lastElement){ throw new IndexOutOfBoundsException("Index can`t be bigger than" +
+                " maximum amaunt of elements of array"); }
+        return this.arrayList[index];
+    }
 
     /*
      * Check when task`s from array will be repeated from @param current-to, or will it repeat at all
      * @return "-1" if task won`t be repeated or "time" of a next task
     */
-    public ArrayTaskList incoming(int from, int to){
+    public ArrayTaskList incoming(int from, int to) throws Exception{
 
         ArrayTaskList tempArrayList = new ArrayTaskList();
         for (int i = 0; i < lastElement; i++) {

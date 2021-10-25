@@ -17,7 +17,10 @@ public class Task {
     private int repeatInterval;
 
     /* Default constructor for a one time class */
-    public Task(String title, int time) {
+    public Task(String title, int time) throws IllegalArgumentException {
+        if(time < 0){
+            throw new IllegalArgumentException("Time can`t be below 0");
+        }
         this.isActive = false;
         this.isRepeated = false;
         timeSet(time, time, 0);
@@ -25,7 +28,13 @@ public class Task {
     }
 
     /* Default constructor for a repeatable task*/
-    public Task(String title, int start, int end, int interval) {
+    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
+        if(start < 0 || end < 0){
+            throw new IllegalArgumentException("Time can`t be below 0");
+        }
+        if(interval <= 0){
+            throw new IllegalArgumentException("Interval can`t be below or equal 0");
+        }
         this.isActive = false;
         this.isRepeated = true;
         timeSet(start, end, interval);
@@ -48,7 +57,10 @@ public class Task {
 
     public int getTime() { return startTime;}
 
-    public void setTime(int time) {
+    public void setTime(int time) throws IllegalArgumentException {
+        if(time < 0){
+            throw new IllegalArgumentException("Time can`t be below 0");
+        }
         if (isRepeated) {
             this.isRepeated = false;
             this.endTime = 0;
