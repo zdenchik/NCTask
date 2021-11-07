@@ -21,7 +21,7 @@ public class ArrayTaskList {
         this.koef = koef;
     }
 
-    /* Add`s @param task to temp array and then clones into main array*/
+    /* Add`s @param tasks to temp array and then clones into main array*/
     public void add(Task task) throws Exception {
         if(task == null){throw new Exception("Task can`t be null");}
 
@@ -66,8 +66,8 @@ public class ArrayTaskList {
 
     /*
      * Check when task`s from array will be repeated from @param current-to, or will it repeat at all
-     * @return "-1" if task won`t be repeated or "time" of a next task
-    */
+     * @return ArrayTaskList containing tasks that will be repeated in that time
+     */
     public ArrayTaskList incoming(int from, int to) throws Exception{
 
         ArrayTaskList tempArrayList = new ArrayTaskList();
