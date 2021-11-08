@@ -2,6 +2,9 @@ package ua.edu.sumdu.j2se.zozulia.tasks;
 
 /**
  *  TaskListFactory creates Task containing Object depending on type that needed
+ *
+ * @version 1.50 08 Nov 2021
+ * @author Denis Zozulia
  */
 public class TaskListFactory {
 
