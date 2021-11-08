@@ -7,7 +7,7 @@ package ua.edu.sumdu.j2se.zozulia.tasks;
  * @version 1.20 18 Oct 2021
  * @author Denis Zozulia
  */
-public class ArrayTaskList {
+public class ArrayTaskList extends AbstractTaskList {
 
     private Task[] arrayList = new Task[10];
     private int lastElement = 0;
@@ -69,15 +69,17 @@ public class ArrayTaskList {
      * @return ArrayTaskList containing tasks that will be repeated in that time
      */
     public ArrayTaskList incoming(int from, int to) throws Exception{
+        if (from < 0 || to < 0){throw new IndexOutOfBoundsException();}
 
         ArrayTaskList tempArrayList = new ArrayTaskList();
         for (int i = 0; i < lastElement; i++) {
-            int temp = arrayList[i].nextTimeAfter(from);
+            int temp = getTask(i).nextTimeAfter(from);
             if(temp != -1 && temp <= to){
-                tempArrayList.add(arrayList[i]);
+                if (getTask(i) != null) {
+                    tempArrayList.add(getTask(i));
+                }
             }
         }
         return tempArrayList;
     }
-
 }
