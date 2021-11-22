@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -196,7 +197,9 @@ public class LinkedTaskList extends AbstractTaskList{
 
     @Override
     public void forEach(Consumer<? super Task> action) {
-
+        for (Node i = tail; i.next != null; i = i.next) {
+            action.accept(i.data);
+        }
     }
 
     @Override
@@ -204,4 +207,11 @@ public class LinkedTaskList extends AbstractTaskList{
         return null;
     }
 
+    public String toString() {
+        String respond = "LinkedTaskList(" + lastElement+ " elements)" + " contains{" +'\n';
+        for(Task i : this){
+            respond =  respond + i.toString() + '\n';
+        }
+        return  respond + "}";
+    }
 }
