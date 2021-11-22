@@ -162,4 +162,14 @@ public class ArrayTaskList extends AbstractTaskList {
     public Spliterator<Task> spliterator() {
         return null;
         }
+
+    public String toString() {
+        String respond = "ArrayTaskList{ size = "  + lastElement + '\n' + "contains[";
+        for(Task i : this){
+            respond =  respond + i.toString() + '\n';
+        }
+        return  respond + "]}";
     }
+}
+
+

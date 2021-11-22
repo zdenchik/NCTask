@@ -150,4 +150,15 @@ public class Task implements Cloneable{
 
         return clone;
     }
+
+    public String toString() {
+        if(isRepeated){
+            return  "Repeatable Task{ '" + title + "' , Active = " + isActive
+                    + ", starts = " + startTime + ", ends = " + endTime +
+                    ", repeats =" + repeatInterval + '}';
+        }
+            return  "NonRepeatable Task{'" + title + "' , Active = " + isActive
+                    + ", starts = " + startTime +'}';
+
+    }
 }
