@@ -1,6 +1,5 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
-import javax.swing.*;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -14,7 +13,7 @@ import java.util.function.Consumer;
 public class LinkedTaskList extends AbstractTaskList{
 
     /* Set up element structure*/
-    private class Node {
+    private static class Node {
         Node next;
         Node prev; //for a next time use
         Task data;
@@ -202,16 +201,14 @@ public class LinkedTaskList extends AbstractTaskList{
         }
     }
 
-    @Override
-    public Spliterator<Task> spliterator() {
-        return null;
-    }
-
     public String toString() {
-        String respond = "LinkedTaskList(" + lastElement+ " elements)" + " contains{" +'\n';
+
+        StringBuilder respond = new StringBuilder("LinkedTaskList(" + lastElement + " elements)" + " contains{" + '\n');
         for(Task i : this){
-            respond =  respond + i.toString() + '\n';
+            respond.append(i.toString()).append('\n');
         }
-        return  respond + "}";
+        respond.append('}');
+
+        return  respond.toString();
     }
 }

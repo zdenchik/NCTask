@@ -14,14 +14,14 @@ public class ArrayTaskList extends AbstractTaskList {
 
     private Task[] arrayList = new Task[10];
     private int lastElement = 0;
-    private double koef = 1.5;
+    private double multiplier = 1.5;
 
-    public double getKoef() {
-        return koef;
+    public double getMultiplier() {
+        return multiplier;
     }
 
-    public void setKoef(double koef) {
-        this.koef = koef;
+    public void setMultiplier(double multiplier) {
+        this.multiplier = multiplier;
     }
 
     /* Add`s @param tasks to temp array and then clones into main array*/
@@ -32,7 +32,7 @@ public class ArrayTaskList extends AbstractTaskList {
             arrayList[lastElement++] = task;
             return;
         }
-        Task[] tempArray = new Task[(int) (arrayList.length*koef)];
+        Task[] tempArray = new Task[(int) (arrayList.length*multiplier)];
         System.arraycopy(arrayList,0,tempArray,0,arrayList.length);
         arrayList = tempArray.clone();
         arrayList[lastElement++] = task;
@@ -158,17 +158,15 @@ public class ArrayTaskList extends AbstractTaskList {
 
     }
 
-    @Override
-    public Spliterator<Task> spliterator() {
-        return null;
-        }
-
     public String toString() {
-        String respond = "ArrayTaskList(" + lastElement+ " elements)" + " contains{" +'\n';
+
+        StringBuilder respond = new StringBuilder("ArrayTaskList(" + lastElement + " elements)" + " contains{" + '\n');
         for(Task i : this){
-            respond =  respond + i.toString() + '\n';
+            respond.append(i.toString()).append('\n');
         }
-        return  respond + "}";
+        respond.append('}');
+
+        return  respond.toString();
     }
 }
 
