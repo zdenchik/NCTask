@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
+import java.util.Objects;
+
 /**
  * Class Task - main purpose is to create default or
  * a repeatable task and manage already created one`s
@@ -7,7 +9,7 @@ package ua.edu.sumdu.j2se.zozulia.tasks;
  * @version 1.10 11 Oct 2021
  * @author Denis Zozulia
  */
-public class Task {
+public class Task implements Cloneable{
 
     private String title;
     private boolean isActive;
@@ -110,5 +112,53 @@ public class Task {
             return temp;
 
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return isActive() == task.isActive() &&
+                isRepeated() == task.isRepeated() &&
+                getStartTime() == task.getStartTime() &&
+                getEndTime() == task.getEndTime() &&
+                getRepeatInterval() == task.getRepeatInterval() &&
+                getTitle().equals(task.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), isActive(), isRepeated(), getStartTime(), getEndTime(), getRepeatInterval());
+    }
+
+    private Task superClone() {
+        try {
+            return (Task) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
+
+    public Task clone(){
+        Task clone = superClone();
+
+        clone.isActive = this.isActive();
+        clone.isRepeated = this.isRepeated();
+        clone.title = getTitle();
+        clone.timeSet(getStartTime(), getEndTime(), getRepeatInterval());
+
+        return clone;
+    }
+
+    public String toString() {
+        if(isRepeated){
+            return  "Repeatable Task{'" + title + "', Active = " + isActive
+                    + ", starts = " + startTime + ", ends = " + endTime +
+                    ", repeats = " + repeatInterval + '}';
+        }
+            return  "NonRepeatable Task{'" + title + "', Active = " + isActive
+                    + ", starts = " + startTime +'}';
+
     }
 }
