@@ -2,12 +2,14 @@ package ua.edu.sumdu.j2se.zozulia.tasks;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Class LinkedTaskList - main purpose is to store default or
  * a repeatable task`s
  *
- * @version 1.20 06 Nov 2021
+ * @version 1.21 22 Nov 2021
  * @author Denis Zozulia
  */
 public class LinkedTaskList extends AbstractTaskList{
@@ -91,23 +93,9 @@ public class LinkedTaskList extends AbstractTaskList{
         return temp.data;
     }
 
-    /*
-     * Check when task`s from array will be repeated from @param current-to, or will it repeat at all
-     * @return LinkedTaskList containing tasks that will be repeated in that time
-     */
-    public LinkedTaskList incoming(int from, int to){
-        if (from < 0 || to < 0){throw new IndexOutOfBoundsException();}
-
-        LinkedTaskList tempArrayList = new LinkedTaskList();
-        for (int i = 0; i < lastElement; i++) {
-            int temp = getTask(i).nextTimeAfter(from);
-            if(temp != -1 && temp <= to){
-                if (getTask(i) != null) {
-                    tempArrayList.add(getTask(i));
-                }
-            }
-        }
-        return tempArrayList;
+    @Override
+    public Stream<Task> getStream() {
+        return StreamSupport.stream(spliterator(),false);
     }
 
     @Override
@@ -211,4 +199,5 @@ public class LinkedTaskList extends AbstractTaskList{
 
         return  respond.toString();
     }
+
 }

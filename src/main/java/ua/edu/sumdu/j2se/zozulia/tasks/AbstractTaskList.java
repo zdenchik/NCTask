@@ -1,18 +1,24 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
+import java.util.stream.Stream;
+
 /**
  * Class AbstractTaskList - is a parent class for TaskList classes
  *
- * @version 1.50 08 Nov 2021
+ * @version 1.51 21 Nov 2021
  * @author Denis Zozulia
  */
 abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
 
     private int lastElement = 0;
-    private ListTypes.types type;
+    protected ListTypes.types type;
+
+    public void setType(ListTypes.types type) {
+        this.type = type;
+    }
 
     /* Add`s @param tasks Object*/
-    abstract void add(Task task) throws Exception;
+    abstract void add(Task task);
 
     /* Remove`s @param task from Object and @return true if task existed or false if not*/
     abstract boolean remove(Task task);
@@ -25,20 +31,19 @@ abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
      * Check when task`s from Object will be repeated from @param current-to, or will it repeat at all
      * @return AbstractTaskList containing tasks that will be repeated in that time
      */
-    public AbstractTaskList incoming(int from, int to) throws Exception{
+    final public AbstractTaskList incoming(int from, int to){
         if (from < 0 || to < 0){throw new IndexOutOfBoundsException();}
 
         AbstractTaskList tempArrayList = TaskListFactory.createTaskList(type);
-        for (int i = 0; i < lastElement; i++) {
-            int temp = getTask(i).nextTimeAfter(from);
-            if(temp != -1 && temp <= to){
-                if (getTask(i) != null) {
-                    tempArrayList.add(getTask(i));
-                }
-            }
-        }
+
+        getStream().filter(a -> a != null && a.nextTimeAfter(from) <= to && a.isActive()).forEach(tempArrayList::add);
+
         return tempArrayList;
     }
+
+    public Stream<Task> getStream(){
+       return null;
     }
+}
 
     

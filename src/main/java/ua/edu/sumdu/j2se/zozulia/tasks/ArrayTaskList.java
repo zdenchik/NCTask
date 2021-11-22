@@ -2,12 +2,13 @@ package ua.edu.sumdu.j2se.zozulia.tasks;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * Class ArrayTaskList - main purpose is to store default or
  * a repeatable task`s
  *
- * @version 1.20 18 Oct 2021
+ * @version 1.21 22 Nov 2021
  * @author Denis Zozulia
  */
 public class ArrayTaskList extends AbstractTaskList {
@@ -67,23 +68,9 @@ public class ArrayTaskList extends AbstractTaskList {
         return this.arrayList[index];
     }
 
-    /*
-     * Check when task`s from array will be repeated from @param current-to, or will it repeat at all
-     * @return ArrayTaskList containing tasks that will be repeated in that time
-     */
-    public ArrayTaskList incoming(int from, int to){
-        if (from < 0 || to < 0){throw new IndexOutOfBoundsException();}
-
-        ArrayTaskList tempArrayList = new ArrayTaskList();
-        for (int i = 0; i < lastElement; i++) {
-            int temp = getTask(i).nextTimeAfter(from);
-            if(temp != -1 && temp <= to){
-                if (getTask(i) != null) {
-                    tempArrayList.add(getTask(i));
-                }
-            }
-        }
-        return tempArrayList;
+    @Override
+    public Stream<Task> getStream() {
+        return Arrays.stream(arrayList);
     }
 
     @Override
@@ -168,6 +155,7 @@ public class ArrayTaskList extends AbstractTaskList {
 
         return  respond.toString();
     }
+
 }
 
 
