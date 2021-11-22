@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Class AbstractTaskList - is a parent class for TaskList classes
@@ -42,7 +43,7 @@ abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
     }
 
     public Stream<Task> getStream(){
-       return null;
+       return StreamSupport.stream(spliterator(),false);
     }
 }
 
