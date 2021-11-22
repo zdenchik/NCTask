@@ -6,7 +6,7 @@ package ua.edu.sumdu.j2se.zozulia.tasks;
  * @version 1.50 08 Nov 2021
  * @author Denis Zozulia
  */
-abstract class AbstractTaskList {
+abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
 
     private int lastElement = 0;
     private ListTypes.types type;
@@ -39,7 +39,6 @@ abstract class AbstractTaskList {
         }
         return tempArrayList;
     }
-
     }
 
     

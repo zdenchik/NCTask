@@ -1,5 +1,8 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
+import java.util.*;
+import java.util.function.Consumer;
+
 /**
  * Class ArrayTaskList - main purpose is to store default or
  * a repeatable task`s
@@ -22,8 +25,8 @@ public class ArrayTaskList extends AbstractTaskList {
     }
 
     /* Add`s @param tasks to temp array and then clones into main array*/
-    public void add(Task task) throws Exception {
-        if(task == null){throw new Exception("Task can`t be null");}
+    public void add(Task task) {
+        if(task == null){throw new NullPointerException();}
 
         if (arrayList.length > lastElement){
             arrayList[lastElement++] = task;
@@ -41,7 +44,7 @@ public class ArrayTaskList extends AbstractTaskList {
         boolean answer = false;
         int k = 0;
         for(int i = 0; i < arrayList.length; i++){
-            if(arrayList[i] == task){
+            if(arrayList[i].equals(task)){
                 answer = true;
                 k = i;
                 break;
@@ -49,7 +52,7 @@ public class ArrayTaskList extends AbstractTaskList {
         }
 
         if(answer){
-            System.arraycopy(arrayList,k+1,arrayList,k,lastElement-k-1);
+            System.arraycopy(arrayList,k+1,arrayList,k, lastElement -k-1);
            arrayList[--lastElement] = null;
         }
 
@@ -60,7 +63,7 @@ public class ArrayTaskList extends AbstractTaskList {
 
     public Task getTask(int index) throws IndexOutOfBoundsException{
         if(index > lastElement){ throw new IndexOutOfBoundsException("Index can`t be bigger than" +
-                " maximum amaunt of elements of array"); }
+                " maximum amount of elements of array"); }
         return this.arrayList[index];
     }
 
@@ -68,7 +71,7 @@ public class ArrayTaskList extends AbstractTaskList {
      * Check when task`s from array will be repeated from @param current-to, or will it repeat at all
      * @return ArrayTaskList containing tasks that will be repeated in that time
      */
-    public ArrayTaskList incoming(int from, int to) throws Exception{
+    public ArrayTaskList incoming(int from, int to){
         if (from < 0 || to < 0){throw new IndexOutOfBoundsException();}
 
         ArrayTaskList tempArrayList = new ArrayTaskList();
@@ -82,4 +85,81 @@ public class ArrayTaskList extends AbstractTaskList {
         }
         return tempArrayList;
     }
-}
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new Iterator<Task>() {
+                private int lastReturnedElement = -1;
+                private int currentIterator = 0;
+
+                @Override
+                public boolean hasNext() { return currentIterator < lastElement;}
+
+                @Override
+                public Task next() {
+                    if(hasNext()){
+                        lastReturnedElement = currentIterator;
+                        return arrayList[currentIterator++];
+                    }else throw new NoSuchElementException();
+                }
+
+                @Override
+                public void remove() throws IllegalStateException{
+                   if(lastReturnedElement < 0){ throw new IllegalStateException();}
+                   else {
+                       ArrayTaskList.this.remove(arrayList[lastReturnedElement]);
+                       currentIterator = lastReturnedElement;
+                       lastReturnedElement = -1;
+                   }
+                }
+        };
+    }
+
+    private ArrayTaskList superClone() {
+        try {
+            return (ArrayTaskList) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
+
+    @Override
+    public ArrayTaskList clone(){
+        ArrayTaskList clone = superClone();
+
+        clone.lastElement = 0;
+        clone.arrayList = arrayList.clone();
+
+        for (int n = 0; n < lastElement; n++) clone.add(arrayList[n]);
+
+        return clone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArrayTaskList)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArrayTaskList tasks = (ArrayTaskList) o;
+
+        return lastElement == tasks.lastElement &&
+                Arrays.equals(arrayList, tasks.arrayList);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(lastElement);
+        result = 31 * result + Arrays.hashCode(arrayList);
+        return result;
+    }
+
+    @Override
+    public void forEach(Consumer<? super Task> action) {
+
+    }
+
+    @Override
+    public Spliterator<Task> spliterator() {
+        return null;
+        }
+    }
