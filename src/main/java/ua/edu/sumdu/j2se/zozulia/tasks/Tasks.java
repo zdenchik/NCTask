@@ -15,7 +15,7 @@ import java.util.SortedMap;
 public class Tasks {
 
     public static Iterable<Task> incoming(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end){
-        if (start == null || end == null){throw new IndexOutOfBoundsException();}
+        if (start.isBefore(LocalDateTime.MIN) || end.isAfter(LocalDateTime.MAX) || start.isAfter(end)){throw new IndexOutOfBoundsException();}
 
         for(Iterator<Task> i = tasks.iterator(); i.hasNext();i.next()){
             Task tempTask = i.next();

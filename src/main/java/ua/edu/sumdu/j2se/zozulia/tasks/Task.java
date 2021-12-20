@@ -20,25 +20,27 @@ public class Task implements Cloneable{
     private LocalDateTime endTime;
     private Integer repeatInterval;
 
-    /* Default constructor for a one time class */
-    public Task(String title, LocalDateTime time) throws IllegalArgumentException {
-        if(time == null){
-            throw new IllegalArgumentException("Time can`t be below null");
+    /* Default constructor for a one start class */
+    public Task(String title, LocalDateTime start) throws IllegalArgumentException {
+        if(start == null || start.isBefore(LocalDateTime.MIN) || start.isAfter(LocalDateTime.MAX)){
+            throw new IllegalArgumentException();
         }
         this.isActive = false;
         this.isRepeated = false;
-        timeSet(time, time, 0);
+        timeSet(start, start, 0);
         this.title = title;
     }
 
     /* Default constructor for a repeatable task*/
     public Task(String title, LocalDateTime start, LocalDateTime end, Duration interval) throws IllegalArgumentException {
-        if(start == null || end == null){
-            throw new IllegalArgumentException("Time can`t be be null");
+        if(interval == null || start == null || end == null){
+            throw new IllegalArgumentException();
         }
-        if(interval == null){
-            throw new IllegalArgumentException("Interval can`t be null");
+
+        if(start.isBefore(LocalDateTime.MIN) || end.isAfter(LocalDateTime.MAX) || start.isAfter(end)){
+            throw new IllegalArgumentException();
         }
+
         this.isActive = false;
         this.isRepeated = true;
         timeSet(start, end, 0);
@@ -57,15 +59,13 @@ public class Task implements Cloneable{
 
     public boolean isActive() { return isActive;}
 
-    public void setActive(boolean active) {
-        if(active != true | active != false){this.isActive = !this.isActive;}
-        this.isActive = active;}
+    public void setActive(boolean active) {this.isActive = active;}
 
     public LocalDateTime getTime() { return startTime;}
 
     public void setTime(LocalDateTime time) throws IllegalArgumentException {
-        if(time == null){
-            throw new IllegalArgumentException("Time can`t be null");
+        if(time.isBefore(LocalDateTime.MIN) || time.isAfter(LocalDateTime.MAX)){
+            throw new IllegalArgumentException("Interval can`t be null");
         }
         if (isRepeated) {
             this.isRepeated = false;
@@ -95,24 +95,28 @@ public class Task implements Cloneable{
      * @return "-1" if task won`t be repeated or "time" of a next task
      */
     public LocalDateTime nextTimeAfter(LocalDateTime current) {
+        if(current.isBefore(LocalDateTime.MIN) || current.isAfter(LocalDateTime.MAX)){
+            throw new IllegalArgumentException();
+        }
+
         if(!isActive){return null;}
 
         if (!isRepeated) {
-            return (startTime.compareTo(current) <= 0) ? null : startTime;
+            return (startTime.isAfter(current)) ? null : startTime;
         }
 
-        if (startTime.compareTo(current) < 0) {
+        if (startTime.isBefore(current)) {
             return startTime;
         }
 
-        if (current.compareTo(endTime) >= 0
-                || startTime.plusMinutes(repeatInterval).compareTo(endTime) >= 0
-                || current.plusMinutes(repeatInterval).compareTo(endTime) <= 0) {
+        if (current.isAfter(endTime)
+                || startTime.plusSeconds(repeatInterval).isAfter(endTime)
+                || current.plusSeconds(repeatInterval).isAfter(endTime)) {
             return null;
         } else {
             LocalDateTime temp = startTime;
-            while(temp.compareTo(current) <= 0){
-                temp = temp.plusMinutes(repeatInterval);
+            while(temp.isBefore(current)){
+                temp = temp.plusSeconds(repeatInterval);
             }
             return temp;
         }

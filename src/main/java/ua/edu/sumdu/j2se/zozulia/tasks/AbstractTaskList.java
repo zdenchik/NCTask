@@ -39,15 +39,15 @@ AbstractTaskList implements Iterable<Task>, Cloneable {
     abstract Task getTask(int index) throws IndexOutOfBoundsException;
 
     /*
-     * Check when task`s from Object will be repeated from @param current-to, or will it repeat at all
+     * Check when task`s start Object will be repeated start @param current-end, or will it repeat at all
      * @return AbstractTaskList containing tasks that will be repeated in that time
      */
-    final public AbstractTaskList incoming(LocalDateTime from, LocalDateTime to){
-        if (from == null || to == null){throw new IndexOutOfBoundsException();}
+    final public AbstractTaskList incoming(LocalDateTime start, LocalDateTime end){
+        if (start.isBefore(LocalDateTime.MIN) || end.isAfter(LocalDateTime.MAX) || start.isAfter(end)){throw new IndexOutOfBoundsException();}
 
         AbstractTaskList tempArrayList = TaskListFactory.createTaskList(type);
 
-        getStream().filter(a -> a != null && a.nextTimeAfter(from).compareTo(to) <= 0
+        getStream().filter(a -> a != null && a.nextTimeAfter(start).isBefore(end)
                 && a.isActive()).forEach(tempArrayList::add);
 
         return tempArrayList;
