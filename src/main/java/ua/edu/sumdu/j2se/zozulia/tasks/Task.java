@@ -1,6 +1,5 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -18,9 +17,9 @@ public class Task implements Cloneable{
     private boolean isRepeated;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Integer repeatInterval;
+    private int repeatInterval;
 
-    /* Default constructor for a one start class */
+    /* Default constructor for a one time class */
     public Task(String title, LocalDateTime start) throws IllegalArgumentException {
         if(start == null || start.isBefore(LocalDateTime.MIN) || start.isAfter(LocalDateTime.MAX)){
             throw new IllegalArgumentException();
@@ -32,8 +31,8 @@ public class Task implements Cloneable{
     }
 
     /* Default constructor for a repeatable task*/
-    public Task(String title, LocalDateTime start, LocalDateTime end, Duration interval) throws IllegalArgumentException {
-        if(interval == null || start == null || end == null){
+    public Task(String title, LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException {
+        if(start == null || end == null){
             throw new IllegalArgumentException();
         }
 
@@ -43,11 +42,11 @@ public class Task implements Cloneable{
 
         this.isActive = false;
         this.isRepeated = true;
-        timeSet(start, end, 0);
+        timeSet(start, end, interval);
         this.title = title;
     }
 
-   private void timeSet(LocalDateTime startTime, LocalDateTime endTime, Integer repeatInterval){
+   private void timeSet(LocalDateTime startTime, LocalDateTime endTime, int repeatInterval){
         this.startTime = startTime;
         this.endTime = endTime;
         this.repeatInterval = repeatInterval;
@@ -75,7 +74,7 @@ public class Task implements Cloneable{
         this.startTime = time;
     }
 
-    public void setTime(LocalDateTime start, LocalDateTime end, Integer interval) {
+    public void setTime(LocalDateTime start, LocalDateTime end, int interval) {
         this.isRepeated = true;
         this.startTime = start;
         this.endTime = end;
@@ -86,7 +85,7 @@ public class Task implements Cloneable{
 
     public LocalDateTime getEndTime() { return isRepeated ? endTime : startTime;}
 
-    public Integer getRepeatInterval() { return isRepeated ? repeatInterval : 0;}
+    public int getRepeatInterval() { return isRepeated ? repeatInterval : 0;}
 
     public boolean isRepeated() { return isRepeated;}
 
@@ -99,26 +98,26 @@ public class Task implements Cloneable{
             throw new IllegalArgumentException();
         }
 
+
         if(!isActive){return null;}
 
         if (!isRepeated) {
-            return (startTime.isAfter(current)) ? null : startTime;
+            return (current.isBefore(startTime)) ? startTime : null;
         }
 
-        if (startTime.isBefore(current)) {
+        if (current.isBefore(startTime)) {
             return startTime;
         }
 
-        if (current.isAfter(endTime)
-                || startTime.plusSeconds(repeatInterval).isAfter(endTime)
-                || current.plusSeconds(repeatInterval).isAfter(endTime)) {
+        if (current.isAfter(endTime) || current.isEqual(endTime)
+                || startTime.plusSeconds(repeatInterval).isAfter(endTime)) {
             return null;
         } else {
             LocalDateTime temp = startTime;
-            while(temp.isBefore(current)){
+            while(temp.isBefore(current) || temp.isEqual(current)){
                 temp = temp.plusSeconds(repeatInterval);
             }
-            return temp;
+            return  (temp.isAfter(endTime)) ? null : temp;
         }
     }
 
