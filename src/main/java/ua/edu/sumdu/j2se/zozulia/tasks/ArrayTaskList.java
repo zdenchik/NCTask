@@ -147,7 +147,8 @@ public class ArrayTaskList extends AbstractTaskList {
 
     public String toString() {
 
-        StringBuilder respond = new StringBuilder("ArrayTaskList(" + lastElement + " elements)" + " contains{" + '\n');
+        StringBuilder respond = new StringBuilder("ArrayTaskList(" + lastElement
+                + " elements)" + " contains{" + '\n');
         for(Task i : this){
             respond.append(i.toString()).append('\n');
         }

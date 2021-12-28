@@ -15,7 +15,7 @@ import java.util.stream.StreamSupport;
 public class LinkedTaskList extends AbstractTaskList{
 
     /* Set up element structure*/
-    private static class Node {
+    private class Node {
         Node next;
         Node prev; //for a next time use
         Task data;
@@ -191,7 +191,8 @@ public class LinkedTaskList extends AbstractTaskList{
 
     public String toString() {
 
-        StringBuilder respond = new StringBuilder("LinkedTaskList(" + lastElement + " elements)" + " contains{" + '\n');
+        StringBuilder respond = new StringBuilder("LinkedTaskList(" + lastElement
+                + " elements)" + " contains{" + '\n');
         for(Task i : this){
             respond.append(i.toString()).append('\n');
         }
