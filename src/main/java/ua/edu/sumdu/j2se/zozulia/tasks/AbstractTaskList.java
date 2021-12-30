@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 abstract class
 AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
 
-    private int lastElement = 0;
+    private int lastElementN = 0;
     protected ListTypes.types type;
 
     public static AbstractTaskList create(ListTypes.types type){

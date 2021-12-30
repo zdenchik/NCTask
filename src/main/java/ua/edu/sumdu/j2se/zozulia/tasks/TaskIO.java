@@ -1,6 +1,8 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import java.io.*;
 import java.time.Instant;
@@ -56,7 +58,7 @@ public class TaskIO {
             for (int i = 0; i < tasksSize; i++) {
                 int titleLength = inputStream.readInt();
                 String title = inputStream.readUTF();
-                boolean active = (inputStream.readInt() == 1)? true:false;
+                boolean active = inputStream.readInt() == 1;
 
                 Task temp;
                 if (inputStream.readBoolean()){
@@ -100,7 +102,9 @@ public class TaskIO {
         try {
             BufferedWriter writer = new BufferedWriter(out);
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
+                    .create();
 
             AbstractTaskList temp;
             if (tasks instanceof LinkedTaskList) {
@@ -121,10 +125,12 @@ public class TaskIO {
     public static void read(AbstractTaskList tasks, Reader in) {
         try {
             BufferedReader reader = new BufferedReader(in);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
+                    .create();
 
             String jStr = reader.readLine();
-            AbstractTaskList temp = gson.fromJson(jStr,AbstractTaskList.class);
+            ArrayTaskList temp = gson.fromJson(jStr,ArrayTaskList.class);
 
             for(Task task:temp){
                 tasks.add(task);
@@ -138,8 +144,6 @@ public class TaskIO {
     public static void writeText(AbstractTaskList tasks, File file) {
         try { FileWriter fileWriter = new FileWriter(file);
             write(tasks,fileWriter);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,4 +156,21 @@ public class TaskIO {
             e.printStackTrace();
         }
     }
+
+
     }
+
+class LocalDateAdapter extends TypeAdapter<LocalDateTime> {
+
+    public void write(JsonWriter jsonWriter,LocalDateTime localDate ) throws IOException {
+        jsonWriter.value(localDate.toString());
+    }
+
+
+    @Override
+    public LocalDateTime read( final JsonReader jsonReader ) throws IOException {
+        return LocalDateTime.parse(jsonReader.nextString());
+    }
+}
+
+
