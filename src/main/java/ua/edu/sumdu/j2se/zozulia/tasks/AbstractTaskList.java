@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -11,7 +12,7 @@ import java.util.stream.StreamSupport;
  * @author Denis Zozulia
  */
 abstract class
-AbstractTaskList implements Iterable<Task>, Cloneable {
+AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
 
     private int lastElement = 0;
     protected ListTypes.types type;
