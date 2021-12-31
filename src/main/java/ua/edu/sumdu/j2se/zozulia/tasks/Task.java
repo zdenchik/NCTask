@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.zozulia.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
  * @version 1.10 11 Oct 2021
  * @author Denis Zozulia
  */
-public class Task implements Cloneable{
+public class Task implements Cloneable, Serializable {
 
     private String title;
     private boolean isActive;

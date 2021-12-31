@@ -13,8 +13,10 @@ public class Main {
 			System.out.println(i.getTitle());
 		};
 		//AbstractTaskList test2 = test.incoming(LocalDateTime.now(),LocalDateTime.MAX);
-		Task temp = new Task("fe",LocalDateTime.now());
+		Task temp = new Task("fe",LocalDateTime.now().plusSeconds(10),LocalDateTime.now().plusSeconds(100),20);
+
 		temp.setActive(true);
+		System.out.println(temp.nextTimeAfter(LocalDateTime.now().plusSeconds(5)));
 	}
 }
 
